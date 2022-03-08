@@ -34,7 +34,7 @@ function SignIn() {
         <FormInput
           name="email"
           type="email"
-          handleChange={handleChange}
+          onChange={handleChange}
           value={formValue.email}
           label="email"
           required
@@ -43,7 +43,7 @@ function SignIn() {
           name="password"
           type="password"
           value={formValue.password}
-          handleChange={handleChange}
+          onChange={handleChange}
           label="password"
           required
         />

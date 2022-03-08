@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { auth } from "./firebase/firebase.utils";
+import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
+import { onAuthStateChanged } from "firebase/auth";
+import { onSnapshot } from "firebase/firestore";
 import Header from "./components/header";
 import HomePage from "./pages/homepage";
 import ShopPage from "./pages/shop";
@@ -11,9 +13,19 @@ function App() {
   const [currentUser, setCurrentUser] = useState();
 
   useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      setCurrentUser(user);
-      console.log(currentUser);
+    onAuthStateChanged(auth, async (userAuth) => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+        onSnapshot(userRef, (snapShot) => {
+          setCurrentUser({
+            currentUser: {
+              id: snapShot.id,
+              ...snapShot.data(),
+            },
+          });
+        });
+      }
+      setCurrentUser(userAuth);
     });
   }, [currentUser]);
 
