@@ -1,98 +1,105 @@
 import React, { useState } from "react";
 
-import FormInput from "./form-input";
-import CustomButton from "./custom-button";
+import FormInput from "../components/form-input";
+import CustomButton from "../components/custom-button";
 
-import { auth, createUserProfileDocument } from "../firebase/firebase.utils";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createAuthUserWithEmailAndPassword,
+  createUserProfileDocument,
+} from "../firebase/firebase.utils";
 
 import "../styles/sign-up.styles.scss";
 
-const initialFormValue = {
+const defaultFormFields = {
   displayName: "",
   email: "",
   password: "",
   confirmPassword: "",
 };
 
-function SignUp() {
-  const [formValue, setFormValue] = useState(initialFormValue);
+function SignUpForm() {
+  const [formFields, setFormFields] = useState(defaultFormFields);
+  const { displayName, email, password, confirmPassword } = formFields;
+
+  const resetFormFields = () => {
+    setFormFields(defaultFormFields);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const { displayName, email, password, confirmPassword } = formValue;
-
     if (password !== confirmPassword) {
-      alert("passwords don't match");
+      alert("passwords do not match");
       return;
     }
 
     try {
-      const { user } = await createUserWithEmailAndPassword(
-        auth,
+      const { user } = await createAuthUserWithEmailAndPassword(
         email,
         password
       );
 
       await createUserProfileDocument(user, { displayName });
-
-      setFormValue({
-        displayName: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-      });
+      resetFormFields();
     } catch (error) {
-      console.error(error);
+      if (error.code === "auth/email-already-in-use") {
+        alert("Cannot create user, email already in use");
+      } else {
+        console.log("user creation encountered an error", error);
+      }
     }
   };
 
   const handleChange = (event) => {
-    setFormValue({ ...formValue, [event.target.name]: event.target.value });
+    const { name, value } = event.target;
+
+    setFormFields({ ...formFields, [name]: value });
   };
 
   return (
-    <div className="sign-up">
-      <h2 className="title">I do not have a account</h2>
+    <div className="sign-up-container">
+      <h2>Don't have an account?</h2>
       <span>Sign up with your email and password</span>
-      <form className="sign-up-form" onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <FormInput
-          type="text"
-          name="displayName"
-          value={formValue.displayName}
-          onChange={handleChange}
           label="Display Name"
+          type="text"
           required
-        />
-        <FormInput
-          type="email"
-          name="email"
-          value={formValue.email}
           onChange={handleChange}
+          name="displayName"
+          value={displayName}
+        />
+
+        <FormInput
           label="Email"
+          type="email"
           required
-        />
-        <FormInput
-          type="password"
-          name="password"
-          value={formValue.password}
           onChange={handleChange}
+          name="email"
+          value={email}
+        />
+
+        <FormInput
           label="Password"
-          required
-        />
-        <FormInput
           type="password"
-          name="confirmPassword"
-          value={formValue.confirmPassword}
-          onChange={handleChange}
-          label="Confirm Password"
           required
+          onChange={handleChange}
+          name="password"
+          value={password}
         />
-        <CustomButton type="submit">SIGN UP</CustomButton>
+
+        <FormInput
+          label="Confirm Password"
+          type="password"
+          required
+          onChange={handleChange}
+          name="confirmPassword"
+          value={confirmPassword}
+        />
+        <CustomButton type="submit">Sign Up</CustomButton>
       </form>
     </div>
   );
 }
 
-export default SignUp;
+export default SignUpForm;

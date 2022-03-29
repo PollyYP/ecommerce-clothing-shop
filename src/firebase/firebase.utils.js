@@ -1,22 +1,12 @@
 import { initializeApp } from "firebase/app";
-import {
-  collection,
-  doc,
-  getDoc,
-  setDoc,
-  getFirestore,
-} from "firebase/firestore";
+import { doc, getDoc, setDoc, getFirestore } from "firebase/firestore";
 import {
   getAuth,
   signInWithPopup,
   GoogleAuthProvider,
-  signOut,
+  createUserWithEmailAndPassword,
 } from "firebase/auth";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyDzFWxaQ--YVVFz38BapcMIjezq62CYb8g",
   authDomain: "ecommerce-clothing-shop-db.firebaseapp.com",
@@ -27,7 +17,18 @@ const firebaseConfig = {
   measurementId: "G-8F5RQMN3NB",
 };
 
-export const createUserProfileDocument = async (userAuth, additionalData) => {
+const firebaseApp = initializeApp(firebaseConfig);
+const provider = new GoogleAuthProvider();
+provider.setCustomParameters({ prompt: "select_account" });
+
+export const auth = getAuth(firebaseApp);
+export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
+export const db = getFirestore(firebaseApp);
+
+export const createUserProfileDocument = async (
+  userAuth,
+  additionalInformation
+) => {
   if (!userAuth) return;
 
   const userRef = doc(db, "users", userAuth.uid);
@@ -38,34 +39,22 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     const createdAt = new Date();
 
     try {
-      const usersRef = collection(db, "users");
-      await setDoc(doc(usersRef, userAuth.uid), {
+      await setDoc(userRef, {
         displayName,
         email,
         createdAt,
-        ...additionalData,
+        ...additionalInformation,
       });
     } catch (error) {
-      console.log("error creating user", error.message);
+      console.log("error creating the user", error.message);
     }
   }
 
   return userRef;
 };
 
-const firebaseApp = initializeApp(firebaseConfig);
+export const createAuthUserWithEmailAndPassword = async (email, password) => {
+  if (!email || !password) return;
 
-export const auth = getAuth(firebaseApp);
-export const db = getFirestore(firebaseApp);
-
-const provider = new GoogleAuthProvider();
-provider.setCustomParameters({ promt: "select_account" });
-export const signInWithGoogle = () => signInWithPopup(auth, provider);
-export const signout = () =>
-  signOut(auth)
-    .then(() => {
-      console.log("Sign-out successful");
-    })
-    .catch((error) => {
-      console.log("An error happened", error);
-    });
+  return await createUserWithEmailAndPassword(auth, email, password);
+};

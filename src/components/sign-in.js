@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import FormInput from "./form-input";
 import CustomButton from "./custom-button";
 
-import { signInWithGoogle } from "../firebase/firebase.utils";
+import { signInWithGooglePopup } from "../firebase/firebase.utils";
+import { createUserProfileDocument } from "../firebase/firebase.utils";
 
 import "../styles/sign-in.styles.scss";
 
@@ -25,6 +26,11 @@ function SignIn() {
     setFormValue({ ...formValue, [event.target.name]: event.target.value });
   };
 
+  const logGoogleUser = async () => {
+    const { user } = await signInWithGooglePopup();
+    await createUserProfileDocument(user);
+  };
+
   return (
     <div className="sign-in">
       <h2>I already have an account</h2>
@@ -36,7 +42,7 @@ function SignIn() {
           type="email"
           onChange={handleChange}
           value={formValue.email}
-          label="email"
+          label="Email"
           required
         />
         <FormInput
@@ -44,14 +50,13 @@ function SignIn() {
           type="password"
           value={formValue.password}
           onChange={handleChange}
-          label="password"
+          label="Password"
           required
         />
         <div className="buttons">
           <CustomButton type="submit"> Sign in </CustomButton>
-          <CustomButton onClick={signInWithGoogle} isGoogleSignIn>
-            {" "}
-            Sign in with Google{" "}
+          <CustomButton buttonType="google" onClick={logGoogleUser}>
+            Sign in with Google
           </CustomButton>
         </div>
       </form>
