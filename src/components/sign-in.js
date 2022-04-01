@@ -5,8 +5,7 @@ import CustomButton from "./custom-button";
 
 import {
   signInWithGooglePopup,
-  createUserProfileDocument,
-  signinUserWithEmailAndPassword,
+  signInAuthUserWithEmailAndPassword,
 } from "../firebase/firebase.utils";
 
 import "../styles/sign-in.styles.scss";
@@ -28,8 +27,7 @@ function SignIn() {
     event.preventDefault();
 
     try {
-      const response = await signinUserWithEmailAndPassword(email, password);
-      console.log(response);
+      await signInAuthUserWithEmailAndPassword(email, password);
       resetFormFields();
     } catch (error) {
       switch (error.code) {
@@ -52,8 +50,7 @@ function SignIn() {
   };
 
   const signinWithGoogle = async () => {
-    const { user } = await signInWithGooglePopup();
-    await createUserProfileDocument(user);
+    await signInWithGooglePopup();
   };
 
   return (
