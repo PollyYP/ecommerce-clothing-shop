@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 import FormInput from "./form-input";
 import CustomButton from "./custom-button";
@@ -18,6 +19,7 @@ const defaultFormFields = {
 function SignIn() {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
+  const { push } = useHistory();
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
@@ -29,6 +31,7 @@ function SignIn() {
     try {
       await signInAuthUserWithEmailAndPassword(email, password);
       resetFormFields();
+      push("/");
     } catch (error) {
       switch (error.code) {
         case "auth/wrong-password":
@@ -51,6 +54,7 @@ function SignIn() {
 
   const signinWithGoogle = async () => {
     await signInWithGooglePopup();
+    push("/");
   };
 
   return (

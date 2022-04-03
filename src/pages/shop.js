@@ -1,11 +1,12 @@
-import React from "react";
-import SHOP_DATA from "../data/shopData";
+import React, { useContext } from "react";
 import CollectionPreview from "../components/collectionPreview";
+import { ProductsContext } from "../contexts/productsContext";
 
 function ShopPage() {
+  const { products } = useContext(ProductsContext);
   return (
     <div className="shop-page">
-      {SHOP_DATA.map(({ id, ...otherCollectionProps }) => (
+      {products.map(({ id, ...otherCollectionProps }) => (
         <CollectionPreview key={id} {...otherCollectionProps} />
       ))}
     </div>
