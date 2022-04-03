@@ -1,13 +1,18 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { ReactComponent as Logo } from "../assets/crownLogo.svg";
-import { UserContext } from "../contexts/userContext";
 import { signOutUser } from "../firebase/firebase.utils";
+import { UserContext } from "../contexts/userContext";
+import { CartContext } from "../contexts/cartContext";
+
+import CartIcon from "./cart-icon";
+import CartDropdown from "./cart-dropdown";
 
 import "../styles/header.styles.scss";
 
 function Header() {
   const { currentUser } = useContext(UserContext);
+  const { isCartOpen } = useContext(CartContext);
 
   return (
     <div className="header">
@@ -38,7 +43,9 @@ function Header() {
             SIGN IN
           </Link>
         )}
+        <CartIcon />
       </div>
+      {isCartOpen && <CartDropdown />}
     </div>
   );
 }
