@@ -12,8 +12,8 @@ function JacketsPage() {
     <div className="collection-preview">
       <h1 className="title">{products[2].title.toUpperCase()}</h1>
       <div className="products-container">
-        {products[2].items.map(({ id, ...otherItemProps }) => (
-          <ProductCard key={id} {...otherItemProps} />
+        {products[2].items.map((item) => (
+          <ProductCard key={item.id} item={item} />
         ))}
       </div>
     </div>

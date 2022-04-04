@@ -12,8 +12,8 @@ function SneakersPage() {
     <div className="collection-preview">
       <h1 className="title">{products[1].title.toUpperCase()}</h1>
       <div className="products-container">
-        {products[1].items.map(({ id, ...otherItemProps }) => (
-          <ProductCard key={id} {...otherItemProps} />
+        {products[1].items.map((item) => (
+          <ProductCard key={item.id} item={item} />
         ))}
       </div>
     </div>

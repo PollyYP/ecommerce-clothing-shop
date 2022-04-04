@@ -12,8 +12,8 @@ function HatsPage() {
     <div className="collection-preview">
       <h1 className="title">{products[0].title.toUpperCase()}</h1>
       <div className="products-container">
-        {products[0].items.map(({ id, ...otherItemProps }) => (
-          <ProductCard key={id} {...otherItemProps} />
+        {products[0].items.map((item) => (
+          <ProductCard key={item.id} item={item} />
         ))}
       </div>
     </div>

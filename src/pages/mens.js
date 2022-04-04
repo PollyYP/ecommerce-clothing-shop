@@ -12,8 +12,8 @@ function MensPage() {
     <div className="collection-preview">
       <h1 className="title">{products[4].title.toUpperCase()}</h1>
       <div className="products-container">
-        {products[4].items.map(({ id, ...otherItemProps }) => (
-          <ProductCard key={id} {...otherItemProps} />
+        {products[4].items.map((item) => (
+          <ProductCard key={item.id} item={item} />
         ))}
       </div>
     </div>

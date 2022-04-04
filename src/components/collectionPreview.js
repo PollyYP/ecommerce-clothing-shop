@@ -16,8 +16,8 @@ function CollectionPreview({ title, linkUrl, items }) {
       <div className="products-container">
         {items
           .filter((item, idx) => idx < 4)
-          .map(({ id, ...otherItemProps }) => (
-            <ProductCard key={id} {...otherItemProps} />
+          .map((item) => (
+            <ProductCard key={item.id} item={item} />
           ))}
       </div>
     </div>
