@@ -1,16 +1,17 @@
-import React, { useContext } from "react";
-import CollectionPreview from "../components/collectionPreview";
-import { ProductsContext } from "../contexts/productsContext";
+import { Routes, Route } from "react-router-dom";
 
-function ShopPage() {
-  const { products } = useContext(ProductsContext);
+import CategoriesPreview from "../pages/categories-preview";
+import Category from "./category";
+
+import "../styles/shop.styles.scss";
+
+const Shop = () => {
   return (
-    <div className="shop-page">
-      {products.map(({ id, ...otherCollectionProps }) => (
-        <CollectionPreview key={id} {...otherCollectionProps} />
-      ))}
-    </div>
+    <Routes>
+      <Route index element={<CategoriesPreview />} />
+      <Route path=":category" element={<Category />} />
+    </Routes>
   );
-}
+};
 
-export default ShopPage;
+export default Shop;

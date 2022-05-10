@@ -1,26 +1,15 @@
-import React, { useContext } from "react";
-
-import { ProductsContext } from "../contexts/productsContext";
-import MenuItem from "./menu-item";
+import DirectoryItem from "./directory-item";
 
 import "../styles/directory.styles.scss";
 
-function Directory() {
-  const { products } = useContext(ProductsContext);
-
+const Directory = ({ categories }) => {
   return (
-    <div className="directory-menu">
-      {products.map(({ title, titleImage, id, size, linkUrl }) => (
-        <MenuItem
-          key={id}
-          title={title}
-          titleImage={titleImage}
-          size={size}
-          linkUrl={linkUrl}
-        />
+    <div className="directory-container">
+      {categories.map((category) => (
+        <DirectoryItem key={category.id} category={category} />
       ))}
     </div>
   );
-}
+};
 
 export default Directory;

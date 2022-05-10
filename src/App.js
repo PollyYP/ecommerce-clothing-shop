@@ -1,37 +1,24 @@
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
-import Header from "./components/header";
 import HomePage from "./pages/homepage";
-import ShopPage from "./pages/shop";
-import HatsPage from "./pages/hats";
-import SneakersPage from "./pages/sneakers";
-import JacketsPage from "./pages/jackets";
-import WomensPage from "./pages/womens";
-import MensPage from "./pages/mens";
-import { ContactPage } from "./pages/contact";
+import Navigation from "./pages/navigation";
 import SignInAndSignUpPage from "./pages/sign-in-sign-up-page";
+import Shop from "./pages/shop";
+import Checkout from "./pages/checkout";
 
 import "./App.css";
 
-function App() {
+const App = () => {
   return (
-    <div>
-      <Router>
-        <Header />
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route exact path="/shop" component={ShopPage} />
-          <Route path="/shop/hats" component={HatsPage} />
-          <Route path="/shop/sneakers" component={SneakersPage} />
-          <Route path="/shop/jackets" component={JacketsPage} />
-          <Route path="/shop/womens" component={WomensPage} />
-          <Route path="/shop/mens" component={MensPage} />
-          <Route path="/contact" component={ContactPage} />
-          <Route path="/signin" component={SignInAndSignUpPage} />
-        </Switch>
-      </Router>
-    </div>
+    <Routes>
+      <Route exact path="/" element={<Navigation />}>
+        <Route index element={<HomePage />} />
+        <Route path="shop/*" element={<Shop />} />
+        <Route path="auth" element={<SignInAndSignUpPage />} />
+        <Route path="checkout" element={<Checkout />} />
+      </Route>
+    </Routes>
   );
-}
+};
 
 export default App;

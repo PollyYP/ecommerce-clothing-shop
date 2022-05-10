@@ -1,16 +1,16 @@
-import React, { useContext } from "react";
-import CustomButton from "./custom-button";
+import { useContext } from "react";
+
 import { CartContext } from "../contexts/cartContext";
+
+import CustomButton from "./custom-button";
 
 import "../styles/productCard.styles.scss";
 
-function ProductCard({ item }) {
+const ProductCard = ({ product }) => {
+  const { name, price, imageUrl } = product;
   const { addItemToCart } = useContext(CartContext);
-  const { name, price, imageUrl } = item;
 
-  const addProductToCart = () => {
-    addItemToCart(item);
-  };
+  const addProductToCart = () => addItemToCart(product);
 
   return (
     <div className="product-card-container">
@@ -24,6 +24,6 @@ function ProductCard({ item }) {
       </CustomButton>
     </div>
   );
-}
+};
 
 export default ProductCard;

@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import { UserProvider } from "./contexts/userContext";
-import { ProductsProvider } from "./contexts/productsContext";
+import { CategoriesProvider } from "./contexts/categoriesContext";
 import { CartProvider } from "./contexts/cartContext";
 
 import "./index.scss";
@@ -11,11 +11,11 @@ import App from "./App";
 ReactDOM.render(
   <BrowserRouter>
     <UserProvider>
-      <ProductsProvider>
+      <CategoriesProvider>
         <CartProvider>
           <App />
         </CartProvider>
-      </ProductsProvider>
+      </CategoriesProvider>
     </UserProvider>
   </BrowserRouter>,
   document.getElementById("root")
